@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en" lang="en"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Results</title>
+</h:head>
+<h:body>
+    <h:form id="formResults">
+
+        <p:growl id="messages" showDetail="true" />
+
+        <p:dataTable id="results"
+                     var="order"
+                     value="#{orderDAO.orderBeanList}">
+
+            <p:column id="name" headerText="Client">
+                <p:outputLabel value="#{order.clientName}"/>
+                <f:facet name="footer">
+                    Total
+                </f:facet>
+            </p:column>
+
+            <p:columns value="#{resultsController.columns}" var="column" columnIndexVar="colIndex">
+                <f:facet name="header">
+                    #{column.header}
+                </f:facet>
+
+                #{order.getAmountOfItemByDescription(column.header)}
+
+                <f:facet name="footer">
+                    #{orderDAO.getAmountOfItemByDescriptionInAllOrders(column.header)}
+                </f:facet>
+            </p:columns>
+
+            <p:column id="totalSumm" headerText="Total">
+                <h:outputText value="#{order.totalSumm}">
+                    <f:convertNumber minFractionDigits="2"/>
+                </h:outputText>$
+                <f:facet name="footer">
+                    #{orderDAO.getTotalAmountInAllOrders()}
+                    /
+                    <h:outputText value="#{orderDAO.getTotalSummInAllOrders()}">
+                        <f:convertNumber minFractionDigits="2"/>
+                    </h:outputText>$
+
+                </f:facet>
+            </p:column>
+
+        </p:dataTable>
+
+    </h:form>
+
+</h:body>
+</html>

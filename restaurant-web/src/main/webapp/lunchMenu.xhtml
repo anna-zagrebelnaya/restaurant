@@ -12,6 +12,18 @@
 </h:head>
 <h:body>
     <h:form id="formLunchMenu">
+
+        <p:growl id="messages" showDetail="true" />
+
+        <p:panelGrid columns="3">
+            <p:outputLabel value="User name: "/>
+            <p:inputText value="#{lunchMenuController.userName}"/>
+            <p:commandButton value="Confirm order"
+                             actionListener="#{lunchMenuController.confirmOrder}"
+                             oncomplete=""
+                             update=":formLunchMenu"/>
+        </p:panelGrid>
+
         <p:dataTable id="tableLunchMenu"
                      widgetVar="tableLunchMenu"
                      value="#{lunchMenuController.selectableLunchMenuItemsModel}"
@@ -42,6 +54,7 @@
                 <f:facet name="header">
                     Price
                     <div style="display: block;  width: 90%; margin: auto;">
+                        from
                         <p:inputText id="from"
                                      style="width: 70px; !important; margin: 0 0.2em; !important"
                                      value="#{lunchMenuController.startPrice}"
@@ -50,6 +63,7 @@
                             <p:ajax listener="#{lunchMenuController.filterPrice}"
                                     update=":formLunchMenu:tableLunchMenu"/>
                         </p:inputText>
+                        $ to
                         <p:inputText id="to"
                                      style="width: 70px; !important; margin: 0 0.2em; !important"
                                      value="#{lunchMenuController.endPrice}"
@@ -58,9 +72,12 @@
                             <p:ajax listener="#{lunchMenuController.filterPrice}"
                                     update=":formLunchMenu:tableLunchMenu"/>
                         </p:inputText>
+                        $
                     </div>
                 </f:facet>
-                <p:outputLabel value="#{item.price}"/>
+                <h:outputText value="#{item.price}">
+                    <f:convertNumber minFractionDigits="2"/>
+                </h:outputText>$
             </p:column>
 
             <p:column id="amount"
@@ -73,6 +90,9 @@
                       selectionMode="multiple"/>
 
         </p:dataTable>
+
+        <p:commandButton value="View results"
+                         action="/viewResults.xhtml?faces-redirect=true"/>
 
     </h:form>
 

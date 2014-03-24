@@ -1,11 +1,15 @@
 package controller;
 
 import DAO.LunchMenuItemDAO;
+import DAO.OrderDAO;
 import bean.LunchMenuItemBean;
 import tableModel.SelectableLunchMenuItemsModel;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,11 +27,15 @@ public class LunchMenuController implements Serializable {
     @Inject
     private LunchMenuItemDAO lunchMenuItemDAO;
 
+    @Inject
+    private OrderDAO orderDAO;
+
     private List<LunchMenuItemBean> selectedLunchMenuItemBeans;
     private List<LunchMenuItemBean> filteredLunchMenuItemBeans;
     private SelectableLunchMenuItemsModel selectableLunchMenuItemsModel;
     private Double startPrice;
     private Double endPrice;
+    private String userName;
 
     public LunchMenuController() {
         selectedLunchMenuItemBeans = new ArrayList<LunchMenuItemBean>();
@@ -35,6 +43,7 @@ public class LunchMenuController implements Serializable {
         selectableLunchMenuItemsModel = new SelectableLunchMenuItemsModel();
         startPrice = 0D;
         endPrice = 0D;
+        userName="";
     }
 
     @PostConstruct
@@ -91,6 +100,14 @@ public class LunchMenuController implements Serializable {
         this.endPrice = endPrice;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     //...getters and setters
 
     private void updateModel() {
@@ -98,9 +115,19 @@ public class LunchMenuController implements Serializable {
     }
 
     public void filterPrice(AjaxBehaviorEvent e) {
-        filteredLunchMenuItemBeans.clear();
-        List<LunchMenuItemBean> list = lunchMenuItemDAO.getLunchMenuItemBeanList();
-        for (LunchMenuItemBean lunchMenuItemBean : list) {
+
+        //reset table filter
+        /*UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":formLunchMenu:tableLunchMenu:description:filter");
+        table.setValueExpression("value", null);*/
+
+        List<LunchMenuItemBean> baseList = new ArrayList<LunchMenuItemBean>();
+        if (filteredLunchMenuItemBeans.isEmpty()) {
+            baseList.addAll(lunchMenuItemDAO.getLunchMenuItemBeanList());
+        } else {
+            baseList.addAll(filteredLunchMenuItemBeans);
+            filteredLunchMenuItemBeans.clear();
+        }
+        for (LunchMenuItemBean lunchMenuItemBean : baseList) {
 
             if (!startPrice.equals(0D) &&
                 !startPrice.isNaN() &&
@@ -118,4 +145,23 @@ public class LunchMenuController implements Serializable {
         }
     }
 
+    public void confirmOrder(ActionEvent e) {
+        List<LunchMenuItemBean> orderList = new ArrayList<LunchMenuItemBean>();
+        for (LunchMenuItemBean lunchMenuItemBean : selectedLunchMenuItemBeans) {
+            if (lunchMenuItemBean.getAmount()!=0) {
+                orderList.add(lunchMenuItemBean.clone());
+            }
+        }
+        orderDAO.newOrder(orderList, userName);
+
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Order is confirmed", "Click view results for details");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+        //clear all
+        for (LunchMenuItemBean lunchMenuItemBean : selectedLunchMenuItemBeans) {
+            lunchMenuItemBean.setAmount(0);
+        }
+        selectedLunchMenuItemBeans = new ArrayList<LunchMenuItemBean>();
+        userName = "";
+    }
 }

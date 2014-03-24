@@ -3,7 +3,7 @@ package bean;
 /**
  * Row of menu or order
  */
-public class LunchMenuItemBean {
+public class LunchMenuItemBean implements Cloneable {
     private static Long lastId=1L;
 
     private Long id=0L;
@@ -51,6 +51,20 @@ public class LunchMenuItemBean {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public LunchMenuItemBean clone() {
+        try {
+            LunchMenuItemBean copy = (LunchMenuItemBean) super.clone();
+            copy.setDescription(description);
+            copy.setPrice(price);
+            copy.setAmount(amount);
+            return copy;
+        } catch (CloneNotSupportedException e) {
+
+        }
+        return null;
     }
 
     @Override
