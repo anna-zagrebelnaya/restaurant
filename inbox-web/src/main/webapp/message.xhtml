@@ -60,7 +60,8 @@
 
             <p:outputLabel value="Reply messages:"
                            rendered="#{!messageController.new}"/>
-            <p:dataList value="#{messageController.messageBean.messagesInThread}"
+            <p:dataList id="replyMessages"
+                        value="#{messageController.messageBean.messagesInThread}"
                         rendered="#{!messageController.new}"
                         var="message"
                         itemType="none"
@@ -75,6 +76,7 @@
                     <p:outputLabel value="#{message.from}"/>
                     <p:panel styleClass="unvisibleBorder">
                         <p:inputTextarea rows="5" cols="30" autoResize="false"
+                                         id="replyBody"
                                          value="#{message.body}"
                                          readonly="true"/> <br/>
                     </p:panel>
@@ -92,10 +94,12 @@
                         /> <br/>
                 <h:outputText id="counterReply"/> <br/>
                 <p:commandButton value="Reply"
+                                 id="replyBtn"
                                  action="#{messageController.replyMessage}"
                                  oncomplete="submit()"
                                  update="reply"/>
                 <p:commandButton value="Back"
+                                 id="backBtn"
                                  action="#{messageController.back}"/>
             </p:panel>
         </p:panelGrid>
