@@ -24,23 +24,23 @@
             </h:outputText>
 
             <p:outputLabel value="From:"/>
-            <p:outputLabel value="#{messageController.messageBean.from}"/>
+            <p:outputLabel id="fromOutput" value="#{messageController.messageBean.from}"/>
 
             <p:outputLabel value="To:"/>
-            <p:outputLabel value="#{messageController.messageBean.to}"
+            <p:outputLabel id="toOutput" value="#{messageController.messageBean.to}"
                            rendered="#{!messageController.new}"/>
-            <p:inputText value="#{messageController.messageBean.to}"
+            <p:inputText id="toInput" value="#{messageController.messageBean.to}"
                          rendered="#{messageController.new}"/>
 
             <p:outputLabel value="Subject:"/>
-            <p:outputLabel value="#{messageController.messageBean.subject}"
+            <p:outputLabel id="subjectOutput" value="#{messageController.messageBean.subject}"
                            rendered="#{!messageController.new}"/>
-            <p:inputText value="#{messageController.messageBean.subject}"
+            <p:inputText id="subjectInput" value="#{messageController.messageBean.subject}"
                          rendered="#{messageController.new}"/>
 
             <p:outputLabel value="Body:"/>
             <p:panel styleClass="unvisibleBorder">
-                <p:inputTextarea rows="5" cols="30" counter="counter" maxlength="100"
+                <p:inputTextarea id="body" rows="5" cols="30" counter="counter" maxlength="100"
                                  counterTemplate="{0} characters remaining." autoResize="false"
                                  value="#{messageController.messageBean.body}"
                                  readonly="#{!messageController.new}"/> <br/>
@@ -51,8 +51,10 @@
             <p:panel rendered="#{messageController.new}"
                      styleClass="unvisibleBorder">
                 <p:commandButton value="Send"
+                                 id="send"
                                  action="#{messageController.sendMessage}"/>
                 <p:commandButton value="Back"
+                                 id="back"
                                  action="#{messageController.back}"/>
             </p:panel>
 
