@@ -5,7 +5,6 @@ import beans.MessageBean;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +25,12 @@ public class MessagesDAO implements Serializable {
 
     public void setMessageBeanList(List<MessageBean> messageBeanList) {
         this.messageBeanList = messageBeanList;
+    }
+
+    public MessageBean newMessage(Date creationDate, String from) {
+        MessageBean messageBean = new MessageBean(creationDate, from);
+        messageBeanList.add(messageBean);
+        return messageBean;
     }
 
     public MessageBean newMessage(Date creationDate, String from, String to, String subject) {

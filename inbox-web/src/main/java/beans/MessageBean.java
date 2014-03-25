@@ -1,6 +1,5 @@
 package beans;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +19,12 @@ public class MessageBean {
     public MessageBean() {
         messagesInThread = new ArrayList<MessageBean>();
         id = lastId++;
+    }
+
+    public MessageBean(Date creationDate, String from) {
+        this();
+        this.creationDate = creationDate;
+        this.from = from;
     }
 
     public MessageBean(Date creationDate, String from, String to, String subject) {
@@ -76,5 +81,22 @@ public class MessageBean {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Date:" + creationDate +
+                " from:" + from +
+                " subject:" + cutSubjectToNSymbols(subject, 10) +
+                '}';
+    }
+
+    private String cutSubjectToNSymbols(String subject, int n) {
+        if (subject.length()<=n) {
+            return subject;
+        }
+        else {
+            return subject.substring(0, n-1);
+        }
     }
 }

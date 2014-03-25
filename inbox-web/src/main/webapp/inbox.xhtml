@@ -15,6 +15,9 @@
 
         <p:growl id="messages" showDetail="true" />
 
+        <p:commandButton value="Send new message"
+                         action="message?faces-redirect=true"/>
+
         <p:dataTable id="tableMessages"
                      widgetVar="tableMessages"
                      value="#{inboxController.messageDataModel}"
@@ -53,7 +56,18 @@
 
             <p:column id="messagesInThread"
                       headerText="Messages in thread">
+                <p:dataList value="#{item.messagesInThread}"
+                            emptyMessage="No messages in thread"/>
+            </p:column>
 
+            <p:column id="viewDetails"
+                      headerText="View details"
+                      style="width:4%">
+                <p:commandButton icon="ui-icon-search"
+                        action="message?faces-redirect=true">
+                    <f:setPropertyActionListener value="#{item}"
+                                                 target="#{messageController.messageBean}"/>
+                </p:commandButton>
             </p:column>
 
         </p:dataTable>
