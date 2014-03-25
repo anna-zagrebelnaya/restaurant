@@ -1,5 +1,6 @@
 package DAO;
 
+import beans.Account;
 import beans.MessageBean;
 
 import javax.enterprise.context.SessionScoped;
@@ -45,5 +46,10 @@ public class MessagesDAO implements Serializable {
         MessageBean messageBean = new MessageBean(creationDate, from, to, subject, body);
         messageBeanList.add(messageBean);
         return messageBean;
+    }
+
+    public void replyMessage(MessageBean messageBean, String reply) {
+        MessageBean newMessageBean = newMessage(new Date(), Account.getAuthor(), messageBean.getFrom(), "Re: " + messageBean.getSubject(), reply);
+        messageBean.addReply(newMessageBean);
     }
 }

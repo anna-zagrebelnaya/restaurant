@@ -56,8 +56,10 @@
                                  action="#{messageController.back}"/>
             </p:panel>
 
-            <p:outputLabel value="Reply messages:"/>
+            <p:outputLabel value="Reply messages:"
+                           rendered="#{!messageController.new}"/>
             <p:dataList value="#{messageController.messageBean.messagesInThread}"
+                        rendered="#{!messageController.new}"
                         var="message"
                         itemType="none"
                         emptyMessage="No messages in thread"
@@ -82,13 +84,15 @@
             <p:outputLabel value="Reply" rendered="#{!messageController.new}"/>
             <p:panel rendered="#{!messageController.new}"
                      styleClass="unvisibleBorder">
-                <p:inputTextarea rows="5" cols="30" counter="counterReply" maxlength="100"
+                <p:inputTextarea id="reply" rows="5" cols="30" counter="counterReply" maxlength="100"
                                  counterTemplate="{0} characters remaining." autoResize="false"
                                  value="#{messageController.reply}"
                         /> <br/>
                 <h:outputText id="counterReply"/> <br/>
                 <p:commandButton value="Reply"
-                                 action="#{messageController.replyMessage}"/>
+                                 action="#{messageController.replyMessage}"
+                                 oncomplete="submit()"
+                                 update="reply"/>
                 <p:commandButton value="Back"
                                  action="#{messageController.back}"/>
             </p:panel>

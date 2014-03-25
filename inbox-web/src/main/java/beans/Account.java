@@ -44,4 +44,8 @@ public class Account {
     public static String getSecondContact() {
         return prop.getProperty("contact2");
     }
+
+    public static int getNumberOfVisibleBodyCharacters() {
+        return Integer.valueOf(prop.getProperty("numberOfVisibleBodyCharacters"));
+    }
 }

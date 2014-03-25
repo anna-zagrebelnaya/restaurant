@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.MessagesDAO;
 import beans.Account;
 import beans.MessageBean;
 
@@ -16,6 +17,9 @@ public class MessageController implements Serializable {
 
     @Inject
     private InboxController inboxController;
+
+    @Inject
+    private MessagesDAO messagesDAO;
 
     @Inject
     private Conversation conversation;
@@ -70,20 +74,15 @@ public class MessageController implements Serializable {
     //...getters and setters
 
     public String sendMessage() {
-        inboxController.saveMessageToInbox(messageBean);
+        messagesDAO.saveMessage(messageBean);
+        inboxController.updateModel();
         return back();
     }
 
-    public String replyMessage() {
-        MessageBean newMessageBean = inboxController.initNewMessage();
-        newMessageBean.setFrom(Account.getAuthor());
-        newMessageBean.setTo(messageBean.getFrom());
-        newMessageBean.setSubject("Re: " + messageBean.getSubject());
-        newMessageBean.setBody(reply);
-        messageBean.addReply(newMessageBean);
-        reply = "";
+    public void replyMessage() {
+        messagesDAO.replyMessage(messageBean, reply);
         inboxController.updateModel();
-        return back();
+        reply = "";
     }
 
     public String back() {

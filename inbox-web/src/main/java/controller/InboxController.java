@@ -75,18 +75,14 @@ public class InboxController implements Serializable {
         return messagesDAO.newMessage(new Date(), Account.getAuthor());
     }
 
-    public void saveMessageToInbox(MessageBean messageBean) {
-        messagesDAO.saveMessage(messageBean);
-        updateModel();
-    }
-
     public void updateModel() {
         messageDataModel.setWrappedData(messagesDAO.getMessageBeanList());
         filteredMessageBeanList.clear();
         filteredMessageBeanList.addAll(messagesDAO.getMessageBeanList());
     }
 
-    private String cutTextToNSymbols(String subject, int n) {
+    private String cutTextToNSymbols(String subject) {
+        int n = Account.getNumberOfVisibleBodyCharacters();
         if (subject.length()<=n) {
             return subject;
         }
@@ -96,7 +92,7 @@ public class InboxController implements Serializable {
     }
 
     public String getShortBody(MessageBean messageBean) {
-        return cutTextToNSymbols(messageBean.getBody(), 10);
+        return cutTextToNSymbols(messageBean.getBody());
     }
 
 }
