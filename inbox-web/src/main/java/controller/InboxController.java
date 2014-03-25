@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named
@@ -38,9 +39,9 @@ public class InboxController implements Serializable {
     private void init() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_STRING);
         try {
-            messagesDAO.newMessage(dateFormat.parse("2014/3/21 16:00:00"), "Alice", "Bob", "How do you do?");
-            messagesDAO.newMessage(dateFormat.parse("2014/3/23 10:00:25"), "Bob", "Alice", "Fine, how're you?");
-            messagesDAO.newMessage(dateFormat.parse("2014/3/25 12:16:39"), "Alice", "Bob", "Great!");
+            messagesDAO.newMessageInList(dateFormat.parse("2014/3/21 16:00:00"), "Alice", "Bob", "How do you do?");
+            messagesDAO.newMessageInList(dateFormat.parse("2014/3/23 10:00:25"), "Bob", "Alice", "Fine, how're you?");
+            messagesDAO.newMessageInList(dateFormat.parse("2014/3/25 12:16:39"), "Alice", "Bob", "Great!");
         } catch (ParseException e) {
 
         }
@@ -63,5 +64,9 @@ public class InboxController implements Serializable {
 
     public void setFilteredMessageBeanList(List<MessageBean> filteredMessageBeanList) {
         this.filteredMessageBeanList = filteredMessageBeanList;
+    }
+
+    public MessageBean initNewMessage() {
+        return messagesDAO.newMessage(new Date(),"Alice");
     }
 }

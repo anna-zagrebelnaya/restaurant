@@ -16,7 +16,12 @@
         <p:growl id="messages" showDetail="true" />
 
         <p:commandButton value="Send new message"
-                         action="message?faces-redirect=true"/>
+                         action="message?faces-redirect=true">
+            <f:setPropertyActionListener value="#{inboxController.initNewMessage()}"
+                                         target="#{messageController.messageBean}"/>
+            <f:setPropertyActionListener value="true"
+                                         target="#{messageController.new}"/>
+        </p:commandButton>
 
         <p:dataTable id="tableMessages"
                      widgetVar="tableMessages"

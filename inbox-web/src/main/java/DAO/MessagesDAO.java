@@ -29,11 +29,10 @@ public class MessagesDAO implements Serializable {
 
     public MessageBean newMessage(Date creationDate, String from) {
         MessageBean messageBean = new MessageBean(creationDate, from);
-        messageBeanList.add(messageBean);
         return messageBean;
     }
 
-    public MessageBean newMessage(Date creationDate, String from, String to, String subject) {
+    public MessageBean newMessageInList(Date creationDate, String from, String to, String subject) {
         MessageBean messageBean = new MessageBean(creationDate, from, to, subject);
         messageBeanList.add(messageBean);
         return messageBean;

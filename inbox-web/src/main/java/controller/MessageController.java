@@ -22,6 +22,7 @@ public class MessageController implements Serializable {
     private MessagesDAO messagesDAO;
 
     private MessageBean messageBean;
+    private boolean isNew;
 
     public void beginConversation() {
         if (conversation.isTransient()) {
@@ -38,9 +39,6 @@ public class MessageController implements Serializable {
     @PostConstruct
     public void init() {
         beginConversation();
-        if (messageBean==null) {
-            this.messageBean = messagesDAO.newMessage(new Date(),"Alice", "", "");
-        }
     }
 
     public MessageBean getMessageBean() {
@@ -49,5 +47,13 @@ public class MessageController implements Serializable {
 
     public void setMessageBean(MessageBean messageBean) {
         this.messageBean = messageBean;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 }
