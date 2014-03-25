@@ -32,8 +32,17 @@ public class MessagesDAO implements Serializable {
         return messageBean;
     }
 
-    public MessageBean newMessageInList(Date creationDate, String from, String to, String subject) {
-        MessageBean messageBean = new MessageBean(creationDate, from, to, subject);
+    public MessageBean newMessage(Date creationDate, String from, String to, String subject, String body) {
+        MessageBean messageBean = new MessageBean(creationDate, from, to, subject, body);
+        return messageBean;
+    }
+
+    public void saveMessage(MessageBean messageBean) {
+        messageBeanList.add(messageBean);
+    }
+
+    public MessageBean newMessageInList(Date creationDate, String from, String to, String subject, String body) {
+        MessageBean messageBean = new MessageBean(creationDate, from, to, subject, body);
         messageBeanList.add(messageBean);
         return messageBean;
     }

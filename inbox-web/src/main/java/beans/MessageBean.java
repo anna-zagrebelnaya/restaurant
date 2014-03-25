@@ -14,6 +14,7 @@ public class MessageBean {
     private String from;
     private String to;
     private String subject;
+    private String body;
     private List<MessageBean> messagesInThread;
 
     public MessageBean() {
@@ -27,12 +28,13 @@ public class MessageBean {
         this.from = from;
     }
 
-    public MessageBean(Date creationDate, String from, String to, String subject) {
+    public MessageBean(Date creationDate, String from, String to, String subject, String body) {
         this();
         this.creationDate = creationDate;
         this.from = from;
         this.to = to;
         this.subject = subject;
+        this.body = body;
     }
 
     public Date getCreationDate() {
@@ -67,6 +69,14 @@ public class MessageBean {
         this.subject = subject;
     }
 
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
     public List<MessageBean> getMessagesInThread() {
         return messagesInThread;
     }
@@ -83,20 +93,8 @@ public class MessageBean {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Date:" + creationDate +
-                " from:" + from +
-                " subject:" + cutSubjectToNSymbols(subject, 10) +
-                '}';
+    public void addReply(MessageBean messageBean) {
+        messagesInThread.add(messageBean);
     }
 
-    private String cutSubjectToNSymbols(String subject, int n) {
-        if (subject.length()<=n) {
-            return subject;
-        }
-        else {
-            return subject.substring(0, n-1);
-        }
-    }
 }

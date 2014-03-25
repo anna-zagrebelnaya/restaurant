@@ -62,7 +62,13 @@
             <p:column id="messagesInThread"
                       headerText="Messages in thread">
                 <p:dataList value="#{item.messagesInThread}"
-                            emptyMessage="No messages in thread"/>
+                            var="message"
+                            itemType="square"
+                            emptyMessage="No messages in thread">
+                    <h:outputText value="#{message.creationDate}">
+                        <f:convertDateTime pattern="#{inboxController.dateFormatString}"/>
+                    </h:outputText> #{message.from}: #{inboxController.getShortBody(message)}
+                </p:dataList>
             </p:column>
 
             <p:column id="viewDetails"

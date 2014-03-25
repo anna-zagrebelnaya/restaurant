@@ -1,6 +1,7 @@
 package controller;
 
 import DAO.MessagesDAO;
+import beans.Account;
 import beans.MessageBean;
 
 import javax.annotation.PostConstruct;
@@ -39,16 +40,18 @@ public class InboxController implements Serializable {
     private void init() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_STRING);
         try {
-            messagesDAO.newMessageInList(dateFormat.parse("2014/3/21 16:00:00"), "Alice", "Bob", "How do you do?");
-            messagesDAO.newMessageInList(dateFormat.parse("2014/3/23 10:00:25"), "Bob", "Alice", "Fine, how're you?");
-            messagesDAO.newMessageInList(dateFormat.parse("2014/3/25 12:16:39"), "Alice", "Bob", "Great!");
+            MessageBean messageBean = messagesDAO.newMessageInList(dateFormat.parse("2014/3/21 16:00:00"), Account.getAuthor(), Account.getFirstContact(), "subject","How do you do?");
+            messageBean.addReply(messagesDAO.newMessage(dateFormat.parse("2014/3/21 16:20:00"), Account.getFirstContact(), Account.getAuthor(), "Re: subject","Fine, thank you"));
+            messagesDAO.newMessageInList(dateFormat.parse("2014/3/25 12:16:39"), Account.getFirstContact(), Account.getAuthor(), "your name", "What is your name?");
+            messagesDAO.newMessageInList(dateFormat.parse("2014/3/25 12:16:39"), Account.getSecondContact(), Account.getAuthor(), "your age", "How old are you?");
         } catch (ParseException e) {
 
         }
 
-        messageDataModel.setWrappedData(messagesDAO.getMessageBeanList());
-        filteredMessageBeanList.addAll(messagesDAO.getMessageBeanList());
+        updateModel();
     }
+
+    //getters and setters
 
     public LazyMessageDataModel getMessageDataModel() {
         return messageDataModel;
@@ -66,7 +69,34 @@ public class InboxController implements Serializable {
         this.filteredMessageBeanList = filteredMessageBeanList;
     }
 
+    //...getters and setters
+
     public MessageBean initNewMessage() {
-        return messagesDAO.newMessage(new Date(),"Alice");
+        return messagesDAO.newMessage(new Date(), Account.getAuthor());
     }
+
+    public void saveMessageToInbox(MessageBean messageBean) {
+        messagesDAO.saveMessage(messageBean);
+        updateModel();
+    }
+
+    public void updateModel() {
+        messageDataModel.setWrappedData(messagesDAO.getMessageBeanList());
+        filteredMessageBeanList.clear();
+        filteredMessageBeanList.addAll(messagesDAO.getMessageBeanList());
+    }
+
+    private String cutTextToNSymbols(String subject, int n) {
+        if (subject.length()<=n) {
+            return subject;
+        }
+        else {
+            return subject.substring(0, n-1) + "...";
+        }
+    }
+
+    public String getShortBody(MessageBean messageBean) {
+        return cutTextToNSymbols(messageBean.getBody(), 10);
+    }
+
 }

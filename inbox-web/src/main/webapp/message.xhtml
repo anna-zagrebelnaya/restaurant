@@ -13,6 +13,8 @@
 <h:body>
     <h:form id="formMessage">
 
+        <link href="resources/css/unvisibleBorder.css" rel="stylesheet" type="text/css" />
+
         <p:growl id="messages" showDetail="true" />
 
         <p:panelGrid columns="2">
@@ -25,8 +27,71 @@
             <p:outputLabel value="#{messageController.messageBean.from}"/>
 
             <p:outputLabel value="To:"/>
+            <p:outputLabel value="#{messageController.messageBean.to}"
+                           rendered="#{!messageController.new}"/>
             <p:inputText value="#{messageController.messageBean.to}"
-                         disabled="#{!messageController.new}"/>
+                         rendered="#{messageController.new}"/>
+
+            <p:outputLabel value="Subject:"/>
+            <p:outputLabel value="#{messageController.messageBean.subject}"
+                           rendered="#{!messageController.new}"/>
+            <p:inputText value="#{messageController.messageBean.subject}"
+                         rendered="#{messageController.new}"/>
+
+            <p:outputLabel value="Body:"/>
+            <p:panel styleClass="unvisibleBorder">
+                <p:inputTextarea rows="5" cols="30" counter="counter" maxlength="100"
+                                 counterTemplate="{0} characters remaining." autoResize="false"
+                                 value="#{messageController.messageBean.body}"
+                                 readonly="#{!messageController.new}"/> <br/>
+                <h:outputText id="counter" rendered="#{messageController.new}"/>
+            </p:panel>
+
+            <p:outputLabel value="" rendered="#{messageController.new}"/>
+            <p:panel rendered="#{messageController.new}"
+                     styleClass="unvisibleBorder">
+                <p:commandButton value="Send"
+                                 action="#{messageController.sendMessage}"/>
+                <p:commandButton value="Back"
+                                 action="#{messageController.back}"/>
+            </p:panel>
+
+            <p:outputLabel value="Reply messages:"/>
+            <p:dataList value="#{messageController.messageBean.messagesInThread}"
+                        var="message"
+                        itemType="none"
+                        emptyMessage="No messages in thread"
+                        styleClass="unvisibleBorder">
+
+                <p:panelGrid columns="1" styleClass="unvisibleBorder">
+
+                    <h:outputText value="#{message.creationDate}">
+                        <f:convertDateTime pattern="#{inboxController.dateFormatString}"/>
+                    </h:outputText>
+                    <p:outputLabel value="#{message.from}"/>
+                    <p:panel styleClass="unvisibleBorder">
+                        <p:inputTextarea rows="5" cols="30" autoResize="false"
+                                         value="#{message.body}"
+                                         readonly="true"/> <br/>
+                    </p:panel>
+
+                </p:panelGrid>
+                <p:separator />
+            </p:dataList>
+
+            <p:outputLabel value="Reply" rendered="#{!messageController.new}"/>
+            <p:panel rendered="#{!messageController.new}"
+                     styleClass="unvisibleBorder">
+                <p:inputTextarea rows="5" cols="30" counter="counterReply" maxlength="100"
+                                 counterTemplate="{0} characters remaining." autoResize="false"
+                                 value="#{messageController.reply}"
+                        /> <br/>
+                <h:outputText id="counterReply"/> <br/>
+                <p:commandButton value="Reply"
+                                 action="#{messageController.replyMessage}"/>
+                <p:commandButton value="Back"
+                                 action="#{messageController.back}"/>
+            </p:panel>
         </p:panelGrid>
 
     </h:form>
