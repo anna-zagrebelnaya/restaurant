@@ -15,6 +15,48 @@
 
         <p:growl id="messages" showDetail="true" />
 
+        <p:dataTable id="tableMessages"
+                     widgetVar="tableMessages"
+                     value="#{inboxController.messageDataModel}"
+                     filteredValue="#{inboxController.filteredMessageBeanList}"
+                     var="item"
+                     emptyMessage="No messages found with given criteria">
+            <f:facet name="header">
+                <p:outputLabel value="Inbox"/>
+            </f:facet>
+
+            <p:column id="creationDate"
+                      sortBy="#{item.creationDate}"
+                      headerText="Creation date">
+                <h:outputText value="#{item.creationDate}">
+                    <f:convertDateTime pattern="#{inboxController.dateFormatString}"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column id="from"
+                      sortBy="#{item.from}"
+                      headerText="From">
+                <p:outputLabel value="#{item.from}"/>
+            </p:column>
+
+            <p:column id="to"
+                      sortBy="#{item.to}"
+                      headerText="To">
+                <p:outputLabel value="#{item.to}"/>
+            </p:column>
+
+            <p:column id="subject"
+                      sortBy="#{item.subject}"
+                      headerText="Subject">
+                <p:outputLabel value="#{item.subject}"/>
+            </p:column>
+
+            <p:column id="messagesInThread"
+                      headerText="Messages in thread">
+
+            </p:column>
+
+        </p:dataTable>
 
     </h:form>
 
