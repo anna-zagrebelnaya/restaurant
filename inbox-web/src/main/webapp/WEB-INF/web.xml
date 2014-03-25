@@ -30,7 +30,7 @@
     </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file>lunchMenu.xhtml</welcome-file>
+        <welcome-file>inbox.xhtml</welcome-file>
     </welcome-file-list>
 
 </web-app>
