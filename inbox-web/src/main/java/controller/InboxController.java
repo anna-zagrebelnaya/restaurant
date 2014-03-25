@@ -6,6 +6,7 @@ import beans.MessageBean;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -28,11 +29,11 @@ public class InboxController implements Serializable {
     @Inject
     private MessagesDAO messagesDAO;
 
-    private LazyMessageDataModel messageDataModel;
+    private ListDataModel<MessageBean> messageDataModel;
     private List<MessageBean> filteredMessageBeanList;
 
     public InboxController() {
-        messageDataModel = new LazyMessageDataModel();
+        messageDataModel = new ListDataModel<MessageBean>();
         filteredMessageBeanList = new ArrayList<MessageBean>();
     }
 
@@ -53,11 +54,11 @@ public class InboxController implements Serializable {
 
     //getters and setters
 
-    public LazyMessageDataModel getMessageDataModel() {
+    public ListDataModel<MessageBean> getMessageDataModel() {
         return messageDataModel;
     }
 
-    public void setMessageDataModel(LazyMessageDataModel messageDataModel) {
+    public void setMessageDataModel(ListDataModel<MessageBean> messageDataModel) {
         this.messageDataModel = messageDataModel;
     }
 

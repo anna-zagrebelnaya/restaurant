@@ -24,17 +24,20 @@
         </p:commandButton>
 
         <p:dataTable id="tableMessages"
-                     widgetVar="tableMessages"
+                     widgetVar="messagesTable"
                      value="#{inboxController.messageDataModel}"
                      filteredValue="#{inboxController.filteredMessageBeanList}"
                      var="item"
                      emptyMessage="No messages found with given criteria">
             <f:facet name="header">
-                <p:outputLabel value="Inbox"/>
+                <p:outputPanel>
+                    <h:outputText value="Search by subject and from:" />
+                    <p:inputText id="globalFilter" onkeyup="messagesTable.filter()" style="width:150px" />
+                </p:outputPanel>
             </f:facet>
 
             <p:column id="creationDate"
-                      sortBy="#{item.creationDate}"
+                      sortBy="creationDate"
                       headerText="Creation date">
                 <h:outputText value="#{item.creationDate}">
                     <f:convertDateTime pattern="#{inboxController.dateFormatString}"/>
@@ -42,19 +45,23 @@
             </p:column>
 
             <p:column id="from"
-                      sortBy="#{item.from}"
+                      sortBy="from"
+                      filterBy="from"
+                      filterMatchMode="contains"
                       headerText="From">
                 <p:outputLabel value="#{item.from}"/>
             </p:column>
 
             <p:column id="to"
-                      sortBy="#{item.to}"
+                      sortBy="to"
                       headerText="To">
                 <p:outputLabel value="#{item.to}"/>
             </p:column>
 
             <p:column id="subject"
-                      sortBy="#{item.subject}"
+                      sortBy="subject"
+                      filterBy="subject"
+                      filterMatchMode="contains"
                       headerText="Subject">
                 <p:outputLabel value="#{item.subject}"/>
             </p:column>
