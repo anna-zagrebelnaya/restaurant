@@ -75,6 +75,11 @@
                     <h:outputText value="#{message.creationDate}">
                         <f:convertDateTime pattern="#{inboxController.dateFormatString}"/>
                     </h:outputText> #{message.from}: #{inboxController.getShortBody(message)}
+                    <p:commandButton icon="ui-icon-search"
+                                     action="message?faces-redirect=true">
+                        <f:setPropertyActionListener value="#{message}"
+                                                     target="#{messageController.messageBean}"/>
+                    </p:commandButton>
                 </p:dataList>
             </p:column>
 
